@@ -8,6 +8,12 @@
   </head>
   <body>
     <script>
+      System.config({
+        paths: {
+          '*': '*.js',
+          'angular2/*': 'angular2/*',
+        }
+      });
       System.import('app');
     </script>
     

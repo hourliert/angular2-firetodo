@@ -1,19 +1,21 @@
 /// <reference path="_all.ts" />
 
 import {Component, bootstrap, View} from "angular2/angular2";
+import {DisplayComponent} from "./components/show-properties";
 
 @Component({
-    selector: 'my-app'
+  selector: 'my-app'
 })
 @View({
-    template: '<h1>Hello {{ name }}</h1>'
+  templateUrl: "app.html",
+  directives: [DisplayComponent]
 })
-class MyAppComponent {
-    name: string;
+class AppComponent {
+  name: string;
 
-    constructor() {
-        this.name = 'Alice';
-    }
+  constructor() {
+      this.name = 'Alice';
+  }
 }
 
-bootstrap(MyAppComponent);
+bootstrap(AppComponent);
