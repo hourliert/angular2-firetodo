@@ -8,7 +8,7 @@ import {FriendsService} from "./friends.service";
   injectables: [FriendsService]
 })
 @View({
-  templateUrl: 'components/show-properties.html',
+  templateUrl: 'lib/components/show-properties.html',
   directives: [For, If]
 })
 export class DisplayComponent {
@@ -17,7 +17,7 @@ export class DisplayComponent {
   time: string;
   names: string[];
  
-  constructor(friends: FriendsService) {
+  constructor(friends?: FriendsService) {
     this.myName = "Bob";
     
     setInterval(() => { 

@@ -4,10 +4,22 @@
   "devDependencies": {
     "browser-sync": "^2.6.9",
     "gulp": "^3.8.11",
+    "gulp-bump": "^0.3.0",
     "gulp-header": "^1.2.2",
+    "gulp-karma": "0.0.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-typescript": "^2.6.0",
+    "gulp-util": "^3.0.4",
+    "jspm": "^0.15.5",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.8",
+    "karma-cli": "0.0.4",
+    "karma-mocha": "^0.1.10",
+    "karma-requirejs": "^0.2.2",
+    "karma-typescript-preprocessor": "0.0.16",
     "merge-stream": "^0.1.7",
+    "mocha": "^2.2.4",
+    "requirejs": "^2.1.17",
     "typescript": "^1.5.0-beta"
   }
 }

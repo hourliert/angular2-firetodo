@@ -7,7 +7,7 @@ import {DisplayComponent} from "./components/show-properties";
   selector: 'my-app'
 })
 @View({
-  templateUrl: "app.html",
+  templateUrl: "lib/app.html",
   directives: [DisplayComponent]
 })
 class AppComponent {
