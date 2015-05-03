@@ -1,4 +1,5 @@
 var ts          = require('gulp-typescript'),
+    del         = require('del'),
     gulp        = require('gulp'),
     path        = require('path'),
     bump        = require('gulp-bump'),
@@ -124,4 +125,13 @@ gulp.task('bump:major', function() {
     gulp.src('./package.json')
         .pipe(bump({type: 'major'}))
         .pipe(gulp.dest('./'));
+});
+
+/**
+ * CLEANING tasks
+ */
+gulp.task('clean', function(cb) {
+    del([
+        PATHS.serve
+    ], cb);
 });
