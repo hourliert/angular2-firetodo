@@ -95,10 +95,10 @@ gulp.task('serve', ['build', 'prepare-angular2'], function () {
  * TDD tasks
  */
 gulp.task('test', [], function () {
-  return gulp.src(PATHS.src + '/**/*.spec.js')
+  return gulp.src('')
     .pipe(karma({
       configFile: 'karma.conf.js',
-      action: 'run'
+      action: 'watch'
     }))
     .on('error', function(err) {
       throw err;

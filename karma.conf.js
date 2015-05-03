@@ -16,7 +16,7 @@ module.exports = function(config) {
         config: 'config.js',
         // Edit this to your needs 
         loadFiles: [
-          'lib/**/*.js',
+          'lib/**/!(app).js',
           'bundle/**/*.js'
         ]
     },
