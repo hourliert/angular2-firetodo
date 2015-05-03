@@ -34,7 +34,7 @@ gulp.task('copy-angular.d', function() {
   return gulp.src(PATHS.angular + '/angular2.d.ts')
     .pipe(gulp.dest(PATHS.typings + '/angular2/'));
 });
-gulp.task('prepare-angular2', ['copy-angular', 'copy-angular.d']);
+gulp.task('prepare-angular2', ['copy-angular.d']);
 
 
 /**
@@ -50,7 +50,7 @@ gulp.task('typescript', function() {
         tsResult.dts.pipe(gulp.dest(PATHS.serve + '/definitions')),
         tsResult.js
           .pipe(sourcemaps.write())
-          .pipe(gulp.dest(path.join(PATHS.serve, PATHS.src)))
+          .pipe(gulp.dest(PATHS.src))
     ]);
 });
 
@@ -72,7 +72,7 @@ gulp.task('copy-html', function() {
 /**
  * BUILD tasks
  */
-gulp.task('build', ['html', 'typescript'], browserSync.reload);
+gulp.task('build', ['typescript'], browserSync.reload);
 
  /**
   * local web server
@@ -80,7 +80,7 @@ gulp.task('build', ['html', 'typescript'], browserSync.reload);
 gulp.task('serve', ['build', 'prepare-angular2'], function () {
   browserSync({
     server: {
-      baseDir: PATHS.serve
+      baseDir: '.'
     }
   });
 
