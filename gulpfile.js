@@ -13,29 +13,14 @@ var ts          = require('gulp-typescript'),
 
 var PATHS = {
   src: './src',
-  serve: './.tmp',
-  angular: './bundle',
-  typings: './typings'
+  build: './build',
+  typings: './typings',
+  coverage: './coverage'
 };
 
 var compilerOptions = require('./tsconfig.json').compilerOptions;
 compilerOptions.typescript = typescript;
 var tsProject = ts.createProject(compilerOptions);
-
-/**
- * Angular2 Tasks
- * These tasks will be deleted when angular2 will be released.
- */
-gulp.task('copy-angular', function() {
-  return gulp.src(PATHS.angular + "/angular2.dev.js")
-    .pipe(gulp.dest(PATHS.serve + '/bundle'));
-});
-gulp.task('copy-angular.d', function() {
-  return gulp.src(PATHS.angular + '/angular2.d.ts')
-    .pipe(gulp.dest(PATHS.typings + '/angular2/'));
-});
-gulp.task('prepare-angular2', ['copy-angular.d']);
-
 
 /**
  * Typescript tasks
@@ -47,37 +32,30 @@ gulp.task('typescript', function() {
                     .pipe(ts(tsProject));
 
     return merge([
-        tsResult.dts.pipe(gulp.dest(PATHS.src + '/definitions')),
+        tsResult.dts.pipe(gulp.dest(PATHS.build + '/definitions')),
         tsResult.js
           .pipe(sourcemaps.write())
           .pipe(gulp.dest(PATHS.src))
     ]);
 });
+gulp.task('watch-ts', ['typescript'], browserSync.reload);
+
 
 /**
  * HTML tasks
- * Simply copy html files to .tmp directory.
- * Injection tasks should be placed here.
  */
-gulp.task('html', ['copy-html', 'copy-index']);
-gulp.task('copy-index', function() {
-  return gulp.src('./index.html')
-    .pipe(gulp.dest(PATHS.serve));
-});
-gulp.task('copy-html', function() {
-  return gulp.src(PATHS.src + '/**/*.html')
-    .pipe(gulp.dest(path.join(PATHS.serve, PATHS.src)));
-});
+ gulp.task('watch-html', browserSync.reload);
+
 
 /**
- * BUILD tasks
+ * BUILD tasks TODO: need concat, uglify, minification
  */
-gulp.task('build', ['typescript'], browserSync.reload);
 
- /**
-  * local web server
-  */
-gulp.task('serve', ['build', 'prepare-angular2'], function () {
+/**
+ * developpment server
+ * auto reload the browser on src file change
+ */
+gulp.task('serve', ['build'], function () {
   browserSync({
     server: {
       baseDir: 'src'
@@ -85,16 +63,34 @@ gulp.task('serve', ['build', 'prepare-angular2'], function () {
   });
 
   gulp.watch([
-    PATHS.src + '/**/*.ts',
-    PATHS.src + '/**/*.html',
-    './index.html'
-  ], ['build']);
+    PATHS.src + '/**/*.ts'
+  ], ['watch-ts']);
+  
+  gulp.watch([
+    PATHS.src + '/**/*.html'
+  ], ['watch-html']);
 });
 
 /**
- * TDD tasks
+ * TEST tasks
  */
+ /**
+  * run all tests once
+  */
 gulp.task('test', [], function () {
+  return gulp.src('')
+    .pipe(karma({
+      configFile: 'karma.conf.js',
+      action: 'run'
+    }))
+    .on('error', function(err) {
+      throw err;
+    });
+});
+/**
+ * Run test on file change
+ */
+gulp.task('test:watch', [], function () {
   return gulp.src('')
     .pipe(karma({
       configFile: 'karma.conf.js',
@@ -105,9 +101,7 @@ gulp.task('test', [], function () {
     });
 });
  
- /**
-  * DEPLOY tasks
-  */
+
 /**
  * version bunping
  */
@@ -130,8 +124,24 @@ gulp.task('bump:major', function() {
 /**
  * CLEANING tasks
  */
-gulp.task('clean', function(cb) {
+gulp.task('clean-build', function(cb) {
     del([
-        PATHS.serve
+        PATHS.build
     ], cb);
 });
+gulp.task('clean-coverage', function(cb) {
+    del([
+        PATHS.coverage
+    ], cb);
+});
+gulp.task('clean-typings', function(cb) {
+    del([
+        PATHS.typings
+    ], cb);
+});
+gulp.task('clean-js', function(cb) {
+    del([
+        PATHS.src + '/!(jspm_packages|lib)/**/!(*config).js'
+    ], cb);
+});
+gulp.task('clean', ['clean-build', 'clean-coverage', 'clean-typings', 'clean-js']);
