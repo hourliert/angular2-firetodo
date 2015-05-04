@@ -55,7 +55,7 @@ gulp.task('watch-ts', ['typescript'], browserSync.reload);
  * developpment server
  * auto reload the browser on src file change
  */
-gulp.task('serve', ['build'], function () {
+gulp.task('serve', ['typescript'], function () {
   browserSync({
     server: {
       baseDir: 'src'
@@ -77,7 +77,7 @@ gulp.task('serve', ['build'], function () {
  /**
   * run all tests once
   */
-gulp.task('test', [], function () {
+gulp.task('test', ['typescript'], function () {
   return gulp.src('')
     .pipe(karma({
       configFile: 'karma.conf.js',
@@ -90,7 +90,11 @@ gulp.task('test', [], function () {
 /**
  * Run test on file change
  */
-gulp.task('test:watch', [], function () {
+gulp.task('test:watch', ['typescript'], function () {
+  gulp.watch([
+    PATHS.src + '/**/*.ts'
+  ], ['watch-ts']);
+  
   return gulp.src('')
     .pipe(karma({
       configFile: 'karma.conf.js',

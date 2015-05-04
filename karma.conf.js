@@ -9,14 +9,14 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'jspm'],
+    frameworks: ['mocha', 'chai', 'sinon', 'jspm'],
     
     jspm: {
         config: 'src/config.js',
         packages: 'src/jspm_packages/',
         // Edit this to your needs 
         loadFiles: [
-          'src/!(jspm_packages)/**/!(main)spec.js'
+          'src/!(jspm_packages)/**/!(main)*spec.js'
         ],
         serveFiles: [
           'src/!(jspm_packages)/**/!(main).js'
@@ -67,7 +67,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome', 'PhantomJS2'],
+    browsers: ['PhantomJS2'],
 
 
     // Continuous Integration mode
