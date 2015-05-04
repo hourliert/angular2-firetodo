@@ -5,6 +5,7 @@ node_modules
 .tmp
 .settings
 src/**/*.js
+!src/config.js
 src/jspm_packages
 coverage
 src/definitions
