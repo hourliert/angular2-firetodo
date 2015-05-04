@@ -25,8 +25,12 @@
     "karma-phantomjs2-launcher": "^0.1.6",
     "karma-sinon": "^1.0.4",
     "merge-stream": "^0.1.7",
+    "run-sequence": "^1.1.0",
     "sinon": "^1.14.1",
     "typescript": "^1.5.0-beta"
+  },
+  "scripts": {
+    "postinstall": "jspm i && gulp ci"
   },
   "jspm": {
     "directories": {

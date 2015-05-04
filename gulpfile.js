@@ -1,5 +1,6 @@
 var ts          = require('gulp-typescript'),
     del         = require('del'),
+    tsd         = require('gulp-tsd'),
     gulp        = require('gulp'),
     path        = require('path'),
     bump        = require('gulp-bump'),
@@ -9,7 +10,8 @@ var ts          = require('gulp-typescript'),
     header      = require('gulp-header'),
     typescript  = require('typescript'),
     sourcemaps  = require('gulp-sourcemaps'),
-    browserSync = require('browser-sync');
+    browserSync = require('browser-sync'),
+    runSequence = require('run-sequence');
 
 var PATHS = {
   src: './src',
@@ -40,6 +42,15 @@ gulp.task('typescript', function() {
 });
 gulp.task('watch-ts', ['typescript'], browserSync.reload);
 
+/**
+ * Typings tasks
+ */
+gulp.task('tsd', function (callback) {
+    tsd({
+        command: 'reinstall',
+        config: './tsd.json'
+    }, callback);
+});
 
 /**
  * HTML tasks
@@ -107,7 +118,7 @@ gulp.task('test:watch', ['typescript'], function () {
  
 
 /**
- * version bunping
+ * version bumping
  */
 gulp.task('bump', function() {
     gulp.src('./package.json')
@@ -149,3 +160,11 @@ gulp.task('clean-js', function(cb) {
     ], cb);
 });
 gulp.task('clean', ['clean-build', 'clean-coverage', 'clean-typings', 'clean-js']);
+
+
+/**
+ * CI Tasks
+ */
+ gulp.task('ci', function (cb) {
+  	runSequence('clean', 'tsd', 'typescript', 'test', cb);
+});
