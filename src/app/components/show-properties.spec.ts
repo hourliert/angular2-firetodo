@@ -1,4 +1,4 @@
-/// <reference path="../../lib/_all.ts" />
+/// <reference path="../../_all.ts" />
 
 import {DisplayComponent} from "./show-properties";
 import {FriendsService} from "./friends.service";

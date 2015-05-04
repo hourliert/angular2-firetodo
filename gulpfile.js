@@ -12,7 +12,7 @@ var ts          = require('gulp-typescript'),
     browserSync = require('browser-sync');
 
 var PATHS = {
-  src: './lib',
+  src: './src',
   serve: './.tmp',
   angular: './bundle',
   typings: './typings'
@@ -47,7 +47,7 @@ gulp.task('typescript', function() {
                     .pipe(ts(tsProject));
 
     return merge([
-        tsResult.dts.pipe(gulp.dest(PATHS.serve + '/definitions')),
+        tsResult.dts.pipe(gulp.dest(PATHS.src + '/definitions')),
         tsResult.js
           .pipe(sourcemaps.write())
           .pipe(gulp.dest(PATHS.src))
@@ -80,7 +80,7 @@ gulp.task('build', ['typescript'], browserSync.reload);
 gulp.task('serve', ['build', 'prepare-angular2'], function () {
   browserSync({
     server: {
-      baseDir: '.'
+      baseDir: 'src'
     }
   });
 

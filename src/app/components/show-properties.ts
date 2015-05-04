@@ -1,4 +1,4 @@
-/// <reference path="../_all.ts" />
+/// <reference path="../../_all.ts" />
 
 import {Component, View, bootstrap, For, If} from "angular2/angular2";
 import {FriendsService} from "./friends.service";
@@ -8,7 +8,7 @@ import {FriendsService} from "./friends.service";
   injectables: [FriendsService]
 })
 @View({
-  templateUrl: 'lib/components/show-properties.html',
+  templateUrl: 'app/components/show-properties.html',
   directives: [For, If]
 })
 export class DisplayComponent {

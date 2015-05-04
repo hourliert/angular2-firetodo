@@ -1,4 +1,4 @@
-/// <reference path="_all.ts" />
+/// <reference path="../_all.ts" />
 
 import {Component, bootstrap, View} from "angular2/angular2";
 import {DisplayComponent} from "./components/show-properties";
@@ -7,7 +7,7 @@ import {DisplayComponent} from "./components/show-properties";
   selector: 'my-app'
 })
 @View({
-  templateUrl: "lib/app.html",
+  templateUrl: "app/app.html",
   directives: [DisplayComponent]
 })
 class AppComponent {

@@ -7,30 +7,45 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'jspm'],
     
     jspm: {
-        config: 'config.js',
+        config: 'src/config.js',
+        packages: 'src/jspm_packages/',
         // Edit this to your needs 
         loadFiles: [
-          'lib/**/!(app).js',
-          'bundle/**/*.js'
+          'src/!(definitions|jspm_packages)/**/!(main)spec.js'
+        ],
+        serveFiles: [
+          'src/!(definitions|jspm_packages)/**/!(main).js'
         ]
     },
+    
+    proxies: {
+      '/base/jspm_packages/': '/base/src/jspm_packages/',
+      '/base/lib/': '/base/src/lib/'
+    },
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+
     preprocessors: {
+      // source files, that you wanna generate coverage for 
+      // do not include tests or libraries 
+      // (these files will be instrumented by Istanbul) 
+      'src/!(definitions|jspm_packages|lib)/**/!(*.spec).js': ['coverage']
+    },
+    
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['mocha', 'coverage'],
 
 
     // web server port
@@ -52,7 +67,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'PhantomJS2'],
 
 
     // Continuous Integration mode

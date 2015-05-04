@@ -4,7 +4,7 @@ node_modules
 .idea
 .tmp
 .settings
-
-lib/**/*.js
-
-jspm_packages
+src/**/*.js
+src/jspm_packages
+coverage
+src/definitions
