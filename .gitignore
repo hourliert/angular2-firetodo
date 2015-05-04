@@ -6,6 +6,7 @@ node_modules
 .settings
 src/**/*.js
 !src/config.js
+!src/lib/angular2.dev.js
 src/jspm_packages
 coverage
 src/definitions
