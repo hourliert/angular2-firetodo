@@ -1,5 +1,7 @@
 /// <reference path="../../_all.ts" />
 
+import {Injectable} from 'angular2/src/di/annotations_impl';
+
 export class KeyModel {
   key: number;
   
@@ -19,6 +21,7 @@ export class TodoModel extends KeyModel {
   }
 }
 
+@Injectable
 export class TodoFactory {
   uid: number;
   constructor() {
@@ -35,6 +38,7 @@ export class TodoFactory {
   }
 }
 
+@Injectable
 export class Store<T> {
   list: List<T>;
   constructor() {
@@ -45,8 +49,7 @@ export class Store<T> {
     this.list.push(item);
   }
   remove(item: T) {
-    let index = this.indexFor(item);
-    this.list.splice(index, 1);
+    this.spliceOut(item);
   }
   
   spliceOut(item: T) {

@@ -40,3 +40,14 @@ declare module "angular2/angular2" {
   function For();
   function If();
 }
+
+declare module 'angular2/src/di/annotations_impl' {
+  function Injectable(): any;
+}
+
+declare module "angular2/src/facade/collection" {
+  class ListWrapper{
+    static push(...rest: any[]): any;
+    static splice(...rest: any[]): any;
+  }
+}

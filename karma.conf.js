@@ -9,7 +9,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai', 'sinon', 'jspm'],
+    frameworks: ['mocha', 'should', 'sinon', 'jspm'],
     
     jspm: {
         config: 'src/config.js',
@@ -64,11 +64,26 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: true,
 
+    
+    customLaunchers: {
+      'PhantomJS2_custom': {
+        base: 'PhantomJS2',
+        options: {
+          windowName: 'my-window',
+          settings: {
+            webSecurityEnabled: false
+          }
+        },
+        flags: ['--remote-debugger-port=9000']
+      }
+    },
+
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['PhantomJS2'],
 
+    
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -9,7 +9,7 @@ describe('Key Model', () => {
   
   it('should be defined', () => {
     model = new KeyModel(1);
-    should.exist(model);
+    model.should.be.ok;
     model.key.should.equal(1);
   });
 });
@@ -23,7 +23,7 @@ describe('Todo Model', () => {
   
   it('should be defined', () => {
     model = new TodoModel(1, 'Get things done.', false);
-    should.exist(model);
+    model.should.be.ok;
     model.key.should.equal(1);
     model.title.should.equal('Get things done.');
     model.completed.should.equal(false);
@@ -39,7 +39,7 @@ describe('Todo Factory', () => {
   
   it('should be defined', () => {
     factory = new TodoFactory();
-    should.exist(factory);
+    factory.should.be.ok;
     factory.uid.should.equal(0);
   });
   
@@ -55,7 +55,7 @@ describe('Todo Factory', () => {
     factory = new TodoFactory();
     factory.uid.should.equal(0);
     var todo: TodoModel = factory.createTodo('Get things done.', false);
-    should.exist(todo);
+    todo.should.be.ok;
     todo.key.should.equal(1);
     todo.title.should.equal('Get things done.');
     todo.completed.should.equal(false);
@@ -72,7 +72,7 @@ describe('Todo Store', () => {
   
   it('should be defined', () => {
     store = new Store<TodoModel>();
-    should.exist(store);
+    store.should.be.ok;
     store.list.length.should.equal(0);
   });
   
@@ -100,7 +100,7 @@ describe('Todo Store', () => {
     store.add(todo);
     store.spliceOut(todo).should.equal(todo);   
     store.list.length.should.equal(0);
-    should.not.exist(store.spliceOut(todo));   
+    (store.spliceOut(todo) === null).should.be.ok;   
   });
   
   it('should remove a todo', () => {
