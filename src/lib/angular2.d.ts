@@ -39,6 +39,10 @@ declare module "angular2/angular2" {
     });
   function For();
   function If();
+  
+  class EventEmitter {
+    next(...rest: any[]): any;
+  }
 }
 
 declare module 'angular2/src/di/annotations_impl' {

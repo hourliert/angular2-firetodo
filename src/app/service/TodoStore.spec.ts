@@ -1,3 +1,5 @@
+/// <reference path="../../_all.ts" />
+
 import {KeyModel, TodoModel, TodoFactory, Store} from './TodoStore';
 
 describe('Key Model', () => {
