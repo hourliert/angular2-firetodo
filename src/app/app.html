@@ -10,6 +10,10 @@
   <section id="main">
     <todo-list #todos></todo-list>
   </section>
+  
+  <footer id="footer">
+    <todo-count [todos]="store.getRemainingTodos()"></todo-count>
+  </footer>
 </section>
 
 <footer id="info">

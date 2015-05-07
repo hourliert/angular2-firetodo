@@ -2,20 +2,13 @@
 
 import {Injectable} from 'angular2/di';
 
-export class KeyModel {
+export class TodoModel {
   key: number;
-  
-  constructor(k: number) {
-    this.key = k;
-  }
-}
-
-export class TodoModel extends KeyModel {
   title: string;
   completed: boolean;
 
   constructor(key: number, title: string, completed: boolean) {
-      super(key);
+      this.key = key;
       this.title = title;
       this.completed = completed;
   }
@@ -40,19 +33,25 @@ export class TodoFactory {
 
 @Injectable()
 export class TodoStore {
-  list: List<KeyModel>;
+  list: List<TodoModel>;
   constructor() {
     this.list = [];
   }
   
-  add(item: KeyModel) {
+  add(item: TodoModel) {
     this.list.push(item);
   }
-  remove(item: KeyModel) {
+  remove(item: TodoModel) {
     this.spliceOut(item);
   }
   
-  spliceOut(item: KeyModel) {
+  getRemainingTodos(): List<TodoModel> {
+    return this.list.filter((todo: TodoModel) => {
+      return !todo.completed;
+    });
+  }
+  
+  spliceOut(item: TodoModel) {
     let index = this.indexFor(item);
     if (index > -1) {
       return this.list.splice(index, 1)[0];
@@ -60,7 +59,7 @@ export class TodoStore {
     return null;
   }
   
-  indexFor(item: KeyModel): number {
+  indexFor(item: TodoModel): number {
     return this.list.indexOf(item);
   }
 }

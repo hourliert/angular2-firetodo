@@ -1,18 +1,27 @@
+<input id="toggle-all" type="checkbox" (click)="toggleAllTodo($event)">
+<label for="toggle-all">Mark all as complete</label>
+
 <ul id="todo-list">
 
   <li *for="#todo of todoStore.list">
 
     <div class="view"
         [class.hidden]="todoEdit == todo">
-      <label (dblclick)="editTodo(todo)">{{todo.title}}</label>
+        
+        <input class="toggle" type="checkbox"
+                 (click)="toggleCompleteTodo(todo)"
+                 [checked]="todo.completed">
+        
+<!--      <label (dblclick)="editTodo(todo)">{{todo.title}}</label>-->
+      <label>{{todo.title}}</label>
       <button class="destroy" (click)="deleteTodo(todo)"></button>
     </div>
     
     <div>
       <input class="edit"
         [class.visible]="todoEdit == todo"
-        [value]="todo.title">
-<!--        (keyup)="finishEditing($event, todo)>-->
+        [value]="todo.title"
+        (keyup)="finishEditing($event, todo)>
     </div>
  
   </li>

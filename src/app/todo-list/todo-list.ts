@@ -6,10 +6,6 @@ import {Inject} from "angular2/di";
 
 @Component({
   selector: 'todo-list',
-  injectables: [
-    TodoStore,
-    TodoFactory
-  ],
   hostListeners: {
     'newtodo': 'onNewTodo($event)'
   }
@@ -22,10 +18,12 @@ export class TodoList {
   todoStore: TodoStore;
   todoFactory: TodoFactory;
   todoEdit: TodoModel;
+  toto: string;
   
   constructor(@Inject(TodoStore) store: TodoStore, @Inject(TodoFactory) factory: TodoFactory) {
     this.todoStore = store;
     this.todoFactory = factory;
+    this.toto = 'test';
   }
   
   onNewTodo(todoTitle: string) {
@@ -48,5 +46,15 @@ export class TodoList {
       (<any> $event.target).value = todo.title;
       this.todoEdit = null;
     }
+  }
+  
+  toggleCompleteTodo(todo: TodoModel) {
+    todo.completed = !todo.completed;
+  }
+  
+  toggleAllTodo($event: MouseEvent) {
+    this.todoStore.list.forEach((todo: TodoModel) => {
+      todo.completed = (<any>$event.target).checked;
+    });
   }
 }

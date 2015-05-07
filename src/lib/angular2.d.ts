@@ -48,6 +48,9 @@ declare module "angular2/angular2" {
 declare module 'angular2/di' {
   function Injectable(): any;
   function Inject(...rest: any[]): any;
+  class Injector {
+    static resolveAndCreate(...rest: any[]): any;
+  }
 }
 
 declare module "angular2/src/facade/collection" {

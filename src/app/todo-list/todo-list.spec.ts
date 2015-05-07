@@ -104,4 +104,43 @@ describe('Todo List Component', () => {
     event.target.value.should.equal('Walk the dog.');
     (component.todoEdit === null).should.be.ok;
   });
+  
+  it('should toggle the completed status of a todo', () => {
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
+    var todo = new TodoMock();
+    
+    component.toggleCompleteTodo(todo);
+    todo.completed.should.be.ok;
+    
+    component.toggleCompleteTodo(todo);
+    todo.completed.should.not.be.ok;
+  });
+  
+  it('should toggle the completed status of all todos', () => {
+    var todo1 = new TodoMock(),
+        todo2 = new TodoMock(),
+        todo3 = new TodoMock();
+        
+    component = new TodoList(<any> {
+      list: [todo1, todo2, todo3] 
+    }, new TodoFactoryMock());
+        
+    component.toggleAllTodo(<any> {
+      target: {
+        checked: true
+      }
+    });
+    todo1.completed.should.be.ok;
+    todo2.completed.should.be.ok;
+    todo3.completed.should.be.ok;
+    
+    component.toggleAllTodo(<any> {
+      target: {
+        checked: false
+      }
+    });
+    todo1.completed.should.not.be.ok;
+    todo2.completed.should.not.be.ok;
+    todo3.completed.should.not.be.ok;
+  });
 });
