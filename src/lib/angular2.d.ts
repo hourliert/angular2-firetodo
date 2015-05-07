@@ -45,13 +45,26 @@ declare module "angular2/angular2" {
   }
 }
 
-declare module 'angular2/src/di/annotations_impl' {
+declare module 'angular2/di' {
   function Injectable(): any;
+  function Inject(...rest: any[]): any;
 }
 
 declare module "angular2/src/facade/collection" {
   class ListWrapper{
     static push(...rest: any[]): any;
     static splice(...rest: any[]): any;
+  }
+}
+
+declare module 'angular2/src/reflection/reflection' {
+  class reflector {
+    static reflectionCapabilities: any;
+  }
+}
+
+declare module 'angular2/src/reflection/reflection_capabilities' {
+  class ReflectionCapabilities {
+    
   }
 }

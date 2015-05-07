@@ -1,6 +1,6 @@
 /// <reference path="../../_all.ts" />
 
-import {KeyModel, TodoModel, TodoFactory, Store} from './TodoStore';
+import {KeyModel, TodoModel, TodoFactory, TodoStore} from './TodoStore';
 
 describe('Key Model', () => {
   var model: KeyModel;
@@ -65,7 +65,7 @@ describe('Todo Factory', () => {
 });
 
 describe('Todo Store', () => {
-  var store: Store<TodoModel>,
+  var store: TodoStore,
       todo: TodoModel;
   
   afterEach(() => {
@@ -73,13 +73,13 @@ describe('Todo Store', () => {
   });
   
   it('should be defined', () => {
-    store = new Store<TodoModel>();
+    store = new TodoStore();
     store.should.be.ok;
     store.list.length.should.equal(0);
   });
   
   it('should add a todo', () => {
-    store = new Store<TodoModel>();
+    store = new TodoStore();
     todo = new TodoModel(1, 'Get things done.', false);
     
     store.add(todo);
@@ -88,7 +88,7 @@ describe('Todo Store', () => {
   });
   
   it('should get the index of a todo', () => {
-    store = new Store<TodoModel>();
+    store = new TodoStore();
     todo = new TodoModel(1, 'Get things done.', false);
 
     store.add(todo);
@@ -96,7 +96,7 @@ describe('Todo Store', () => {
   });
   
   it('should splice out a todo', () => {
-    store = new Store<TodoModel>();
+    store = new TodoStore();
     todo = new TodoModel(1, 'Get things done.', false);
     
     store.add(todo);
@@ -106,7 +106,7 @@ describe('Todo Store', () => {
   });
   
   it('should remove a todo', () => {
-    store = new Store<TodoModel>();
+    store = new TodoStore();
     todo = new TodoModel(1, 'Get things done.', false);
     
     store.list.length.should.equal(0);

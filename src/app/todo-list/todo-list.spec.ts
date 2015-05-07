@@ -1,25 +1,27 @@
 import {TodoList} from './todo-list';
-import {Store, TodoFactory, TodoModel} from '../service/TodoStore';
+import {TodoStore, TodoFactory, TodoModel} from '../service/TodoStore';
 
 class TodoMock extends TodoModel {
-  constructor(title: string, completed: boolean) {
-    super(1, title, completed);
+  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false) {
+    super(key, title, completed);
   }
 }
-class StoreMock<T> extends Store<T> {
+class TodoStoreMock extends TodoStore{
   constructor() {
     super();
   }
-  add(todo: T) {
-    this.list = [todo];
+  add(todo: TodoMock) { 
+  }
+  remote(todo: TodoMock){
   }
 }
+
 class TodoFactoryMock extends TodoFactory {
   constructor() {
     super();
   }
-  createTodo(title: string, completed: boolean): TodoMock {
-    return new TodoMock(title, completed);
+  createTodo(title: string = 'Get things done.', completed: boolean = false): TodoMock {
+    return new TodoMock(1, title, completed);
   }
 }
 
@@ -32,24 +34,74 @@ describe('Todo List Component', () => {
   });
   
   it('should be defined', () => {
-    component = new TodoList(new StoreMock<TodoModel>(), new TodoFactoryMock());
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
     component.should.be.ok;
-    component.todosStore.should.be.ok;
-    component.todosFactory.should.be.ok;
+    component.todoStore.should.be.ok;
+    component.todoFactory.should.be.ok;
   });
   
   it('should handle a new todo', () => {
-    component = new TodoList(new StoreMock<TodoModel>(), new TodoFactoryMock());
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
+    
+    var storeSpy = sinon.spy(component.todoStore, 'add'),
+        factorySpy = sinon.spy(component.todoFactory, 'createTodo');
     
     component.onNewTodo('Get things done.');
-    component.todosStore.list.length.should.equal(1);
-    component.todosStore.list[0].title.should.equal('Get things done.');
+    
+    storeSpy.calledOnce.should.be.ok;
+    factorySpy.calledOnce.should.be.ok;
+    factorySpy.calledWith('Get things done.', false).should.be.ok;
   });
   
-  it.skip('should delete a todo', () => {
-    component = new TodoList(new StoreMock<TodoModel>(), new TodoFactoryMock());
+  it('should delete a todo', () => {
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
     
-    var todo = new TodoMock('Get things done.', false);
-    component.delete(todo);
+    var storeSpy = sinon.spy(component.todoStore, 'remove'),
+        todo = new TodoMock();
+    
+    component.deleteTodo(todo);
+    
+    storeSpy.calledOnce.should.be.ok;
+    storeSpy.calledWith(todo).should.be.ok;
+  });
+  
+  it('should select an existing todo to edit', () => {
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
+    
+    var todo = new TodoMock();
+    
+    (component.todoEdit === undefined).should.be.ok;
+    component.editTodo(todo);
+    component.todoEdit.should.be.equal(todo);
+  });
+  
+  it('should finish todo editing', () => {
+    component = new TodoList(new TodoStoreMock(), new TodoFactoryMock());
+     
+    var event = <any> {
+          which: 100,
+          target: {
+            value: 'Get things done.'
+          }
+        },
+        todo = new TodoMock();
+        
+    component.todoEdit = todo;
+    component.finishEditing(event, todo);
+    
+    event.target.value = 'Walk the dog.';
+    event.which = 13;
+    
+    component.finishEditing(event, todo);
+    todo.title.should.equal('Walk the dog.');
+    (component.todoEdit === null).should.be.ok;
+    
+    component.todoEdit = todo;
+    event.target.value = 'Get things done.';
+    event.which = 27;
+    
+    component.finishEditing(event, todo);
+    event.target.value.should.equal('Walk the dog.');
+    (component.todoEdit === null).should.be.ok;
   });
 });
