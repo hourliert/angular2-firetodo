@@ -6,7 +6,7 @@
   <li *for="#todo of todoStore.list">
 
     <div class="view"
-        [class.hidden]="todoEdit == todo">
+        [class.hidden]="todoEdit == todo || todo.hidden">
         
         <input class="toggle" type="checkbox"
                  (click)="toggleCompleteTodo(todo)"

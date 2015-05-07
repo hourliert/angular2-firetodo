@@ -13,6 +13,10 @@
   
   <footer id="footer">
     <todo-count [todos]="store.getRemainingTodos()"></todo-count>
+    
+    <todo-filter (newfilter)="todos.onNewFilter($event)"></todo-filter>
+    
+    <button id="clear-completed" (click)="todos.clearCompleted()">Clear completed</button>
   </footer>
 </section>
 

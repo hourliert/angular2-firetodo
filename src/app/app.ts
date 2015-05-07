@@ -8,6 +8,7 @@ import {TodoStore, TodoFactory} from './service/TodoStore';
 import {TodoInput} from "./todo-input/todo-input";
 import {TodoList} from "./todo-list/todo-list";
 import {TodoCount} from "./todo-count/todo-count";
+import {TodoFilter} from "./todo-filter/todo-filter";
 
 @Component({
   selector: 'todo-app',
@@ -18,7 +19,7 @@ import {TodoCount} from "./todo-count/todo-count";
 })
 @View({
   templateUrl: "app/app.html",
-  directives: [TodoInput, TodoList, TodoCount]
+  directives: [TodoInput, TodoList, TodoCount, TodoFilter]
 })
 export class TodoApp {
   store: TodoStore;

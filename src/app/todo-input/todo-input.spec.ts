@@ -2,8 +2,8 @@ import {TodoInput} from './todo-input';
 import {TodoStore, TodoFactory, TodoModel} from '../service/TodoStore';
 
 class TodoMock extends TodoModel {
-  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false) {
-    super(key, title, completed);
+  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false, hidden: boolean = false) {
+    super(key, title, completed, hidden);
   }
 }
 class TodoStoreMock extends TodoStore{

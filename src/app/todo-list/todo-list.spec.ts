@@ -1,9 +1,9 @@
 import {TodoList} from './todo-list';
-import {TodoStore, TodoFactory, TodoModel} from '../service/TodoStore';
+import {TodoStore, TodoFactory, TodoModel, TODO_DISPLAY} from '../service/TodoStore';
 
 class TodoMock extends TodoModel {
-  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false) {
-    super(key, title, completed);
+  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false, hidden: boolean = false) {
+    super(key, title, completed, hidden);
   }
 }
 class TodoStoreMock extends TodoStore{
@@ -142,5 +142,65 @@ describe('Todo List Component', () => {
     todo1.completed.should.not.be.ok;
     todo2.completed.should.not.be.ok;
     todo3.completed.should.not.be.ok;
+  });
+  
+  it('should clear completed todo', () => {
+    var todo1 = new TodoMock(),
+        todo2 = new TodoMock(),
+        todo3 = new TodoMock();
+    todo1.completed = true;
+    todo2.completed = true;
+    todo3.completed = true;
+        
+    component = new TodoList(<any> {
+      list: [todo1, todo2, todo3],
+      removeBy: function() {
+        this.list = [];
+      }
+    }, new TodoFactoryMock());
+    
+    var spy = sinon.spy(component.todoStore, "removeBy");
+    
+    component.clearCompleted();
+    
+    spy.calledOnce.should.be.ok;
+  });
+  
+  it('should filter todos', () => {
+    var todo1 = new TodoMock(),
+        todo2 = new TodoMock(),
+        todo3 = new TodoMock();
+    todo1.completed = true;
+    todo2.completed = false;
+    todo3.completed = true;
+        
+    component = new TodoList(<any> {
+      list: [todo1, todo2, todo3],
+      removeBy: function() {
+        this.list = [];
+      },
+      forEachTodo: function(action) {
+        this.list.forEach(action); // TODO this tests should be in todo store spec
+      }
+    }, new TodoFactoryMock());
+    
+    var spy = sinon.spy(component.todoStore, "forEachTodo");
+    
+    component.onNewFilter(TODO_DISPLAY.all);
+    todo1.hidden.should.be.false;
+    todo2.hidden.should.be.false;
+    todo3.hidden.should.be.false;
+    
+    component.onNewFilter(TODO_DISPLAY.active);
+    todo1.hidden.should.be.true;
+    todo2.hidden.should.be.false;
+    todo3.hidden.should.be.true;
+    
+    component.onNewFilter(TODO_DISPLAY.completed);
+    todo1.hidden.should.be.false;
+    todo2.hidden.should.be.true;
+    todo3.hidden.should.be.false; 
+    
+    spy.calledThrice.should.be.ok;
   });
 });

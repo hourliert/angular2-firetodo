@@ -2,15 +2,26 @@
 
 import {Injectable} from 'angular2/di';
 
+export enum TODO_DISPLAY {
+  all, active, completed
+}
+
+export interface ITodoFilter {
+  label: string;
+  type: TODO_DISPLAY;
+}
+
 export class TodoModel {
   key: number;
   title: string;
   completed: boolean;
+  hidden: boolean;
 
-  constructor(key: number, title: string, completed: boolean) {
+  constructor(key: number, title: string, completed: boolean, hidden: boolean) {
       this.key = key;
       this.title = title;
       this.completed = completed;
+      this.hidden = hidden;
   }
 }
 
@@ -26,8 +37,8 @@ export class TodoFactory {
     return this.uid;
   }
   
-  createTodo(title: string, completed: boolean): TodoModel {
-    return new TodoModel(this.nextUid(), title, completed);
+  createTodo(title: string, completed: boolean, hidden: boolean): TodoModel {
+    return new TodoModel(this.nextUid(), title, completed, hidden);
   }
 }
 
@@ -61,5 +72,13 @@ export class TodoStore {
   
   indexFor(item: TodoModel): number {
     return this.list.indexOf(item);
+  }
+  
+  removeBy(filter: any) {
+    this.list = this.list.filter(filter);
+  }
+  
+  forEachTodo(action: any) {
+    this.list.forEach(action);
   }
 }

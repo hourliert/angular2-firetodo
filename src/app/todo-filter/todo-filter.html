@@ -1,0 +1,6 @@
+<div [class.hidden]="true"></div>
+<ul id="filters">
+  <li *for="#filter of filters">
+    <a href="#" class="selected" (click)="selectFilter(filter.type)">{{filter.label}}</a>
+  </li>
+</ul>

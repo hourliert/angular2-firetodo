@@ -1,13 +1,17 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, For} from 'angular2/angular2';
-import {TodoStore, TodoFactory, TodoModel} from '../service/TodoStore';
+import {TodoStore, TodoFactory, TodoModel, TODO_DISPLAY} from '../service/TodoStore';
 import {Inject} from "angular2/di";
 
 @Component({
   selector: 'todo-list',
   hostListeners: {
-    'newtodo': 'onNewTodo($event)'
+    'newtodo': 'onNewTodo($event)',
+    'newfilter': 'onNewFilter($event)'
+  },
+  properties: {
+    filter: 'display'
   }
 })
 @View({
@@ -27,7 +31,7 @@ export class TodoList {
   }
   
   onNewTodo(todoTitle: string) {
-    this.todoStore.add(this.todoFactory.createTodo(todoTitle, false));
+    this.todoStore.add(this.todoFactory.createTodo(todoTitle, false, false));
   }
   
   deleteTodo(todo: TodoModel) {
@@ -55,6 +59,41 @@ export class TodoList {
   toggleAllTodo($event: MouseEvent) {
     this.todoStore.list.forEach((todo: TodoModel) => {
       todo.completed = (<any>$event.target).checked;
+    });
+  }
+  
+  clearCompleted() {
+    this.todoStore.removeBy(todo => !todo.completed);
+  }
+  
+  onNewFilter(display: TODO_DISPLAY) {
+    console.log(display);
+    this.todoStore.forEachTodo((todo: TodoModel) => {
+      if (todo.completed) {
+        switch (display) {
+          case TODO_DISPLAY.all:
+            todo.hidden = false;
+            break;
+          case TODO_DISPLAY.active:
+            todo.hidden = true;
+            break;
+          case TODO_DISPLAY.completed:
+            todo.hidden = false;
+            break;
+        }
+      } else {
+        switch (display) {
+          case TODO_DISPLAY.all:
+            todo.hidden = false;
+            break;
+          case TODO_DISPLAY.active:
+            todo.hidden = false;
+            break;
+          case TODO_DISPLAY.completed:
+            todo.hidden = true;
+            break;
+        }
+      }
     });
   }
 }
