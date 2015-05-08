@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, For} from 'angular2/angular2';
-import {TodoStore, TodoFactory, TodoModel, TODO_DISPLAY} from '../service/TodoStore';
+import {TodoStore, TodoFactory, Todo, TODO_DISPLAY} from '../service/TodoStore';
 import {Inject} from "angular2/di";
 
 @Component({
@@ -21,7 +21,7 @@ import {Inject} from "angular2/di";
 export class TodoList {
   todoStore: TodoStore;
   todoFactory: TodoFactory;
-  todoEdit: TodoModel;
+  todoEdit: Todo;
   toto: string;
   
   constructor(@Inject(TodoStore) store: TodoStore, @Inject(TodoFactory) factory: TodoFactory) {
@@ -34,15 +34,15 @@ export class TodoList {
     this.todoStore.add(this.todoFactory.createTodo(todoTitle, false, false));
   }
   
-  deleteTodo(todo: TodoModel) {
+  deleteTodo(todo: Todo) {
     this.todoStore.remove(todo);
   }
     
-  editTodo(todo: TodoModel) {
+  editTodo(todo: Todo) {
     this.todoEdit = todo;
   }
   
-  finishEditing($event: KeyboardEvent, todo: TodoModel) {
+  finishEditing($event: KeyboardEvent, todo: Todo) {
     if ($event.which === 13) { //enter key
       todo.title = (<any> $event.target).value;
       this.todoEdit = null;
@@ -52,23 +52,25 @@ export class TodoList {
     }
   }
   
-  toggleCompleteTodo(todo: TodoModel) {
+  toggleCompleteTodo(todo: Todo) {
     todo.completed = !todo.completed;
+    this.todoStore.save(todo);
   }
   
   toggleAllTodo($event: MouseEvent) {
-    this.todoStore.list.forEach((todo: TodoModel) => {
+    this.todoStore.list.forEach((todo: Todo) => {
       todo.completed = (<any>$event.target).checked;
+      this.todoStore.save(todo);
     });
   }
   
   clearCompleted() {
-    this.todoStore.removeBy(todo => !todo.completed);
+    this.todoStore.removeBy(todo => todo.completed);
   }
   
   onNewFilter(display: TODO_DISPLAY) {
     console.log(display);
-    this.todoStore.forEachTodo((todo: TodoModel) => {
+    this.todoStore.forEachTodo((todo: Todo) => {
       if (todo.completed) {
         switch (display) {
           case TODO_DISPLAY.all:

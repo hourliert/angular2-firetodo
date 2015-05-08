@@ -3,7 +3,8 @@
 
 <ul id="todo-list">
 
-  <li *for="#todo of todoStore.list">
+  <li *for="#todo of todoStore.list"
+      [class.completed]="todo.completed">
 
     <div class="view"
         [class.hidden]="todoEdit == todo || todo.hidden">

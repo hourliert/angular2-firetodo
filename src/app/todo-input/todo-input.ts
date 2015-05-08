@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, EventEmitter} from 'angular2/angular2';
-import {TodoModel} from '../service/TodoStore';
+import {Todo} from '../service/TodoStore';
 
 @Component({
   selector: 'todo-input',
@@ -12,7 +12,7 @@ import {TodoModel} from '../service/TodoStore';
 })
 export class TodoInput {
   newtodo: EventEmitter;
-  todoEdit: TodoModel;
+  todoEdit: Todo;
   
   constructor() {
     this.newtodo = new EventEmitter();
@@ -31,7 +31,7 @@ export class TodoInput {
     }
   }
   
-  editTodo(todo: TodoModel) {
+  editTodo(todo: Todo) {
     this.todoEdit = todo;
   }
 }

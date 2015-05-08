@@ -1,6 +1,8 @@
 /// <reference path="../../_all.ts" />
 
-import {Injectable} from 'angular2/di';
+import {Injectable, Inject} from 'angular2/di';
+import {FirebaseAdapter, IFirebaseObserver} from "./firebase-adapter";
+import {ITodo} from "../interfaces/Todo";
 
 export enum TODO_DISPLAY {
   all, active, completed
@@ -11,58 +13,94 @@ export interface ITodoFilter {
   type: TODO_DISPLAY;
 }
 
-export class TodoModel {
-  key: number;
+export class Todo implements ITodo {
+  private _key: string;
   title: string;
   completed: boolean;
   hidden: boolean;
 
-  constructor(key: number, title: string, completed: boolean, hidden: boolean) {
-      this.key = key;
-      this.title = title;
-      this.completed = completed;
-      this.hidden = hidden;
+  constructor(
+    key: string, 
+    title: string, 
+    completed: boolean, 
+    hidden: boolean
+  ) {
+    this._key = key;
+    this.title = title;
+    this.completed = completed;
+    this.hidden = hidden;
+  }
+  
+  get key() {
+    return this._key;
+  }
+  
+  get model(): ITodo {
+    let title = this.title,
+        completed = this.completed,
+        hidden = this.hidden;
+    return { title, completed, hidden };
+  }
+  set model(model: ITodo) {
+    this.title = model.title;
+    this.completed = model.completed;
+    this.hidden = model.hidden;
   }
 }
 
 @Injectable()
 export class TodoFactory {
-  uid: number;
-  constructor() {
-    this.uid = 0;
-  }
-  
-  nextUid(): number {
-    this.uid++;
-    return this.uid;
-  }
-  
-  createTodo(title: string, completed: boolean, hidden: boolean): TodoModel {
-    return new TodoModel(this.nextUid(), title, completed, hidden);
+  createTodo(title: string, completed: boolean, hidden: boolean): Todo {
+    return new Todo(null, title, completed, hidden);
   }
 }
 
 @Injectable()
-export class TodoStore {
-  list: List<TodoModel>;
-  constructor() {
+export class TodoStore implements IFirebaseObserver {
+  list: List<Todo>;
+  fbAdapter: FirebaseAdapter;
+
+  constructor(
+    @Inject(FirebaseAdapter) fb: FirebaseAdapter
+  ) {
     this.list = [];
+    
+    this.fbAdapter = fb;
+    
+    this.fbAdapter.registerForTodoAdding(this);
+    this.fbAdapter.registerForTodoRemoving(this);
+    this.fbAdapter.registerForTodoChanging(this);
   }
   
-  add(item: TodoModel) {
-    this.list.push(item);
+  notifyTodoAdded(key: string, value: ITodo) {
+    this.list.push(new Todo(key, value.title, value.completed, value.hidden));
   }
-  remove(item: TodoModel) {
-    this.spliceOut(item);
+  notifyTodoChanged(key: string, value: ITodo) {
+    let todo = this.findByKey(key);
+    todo.model = value;
+  }
+  notifyTodoRemoved(key: string, value: ITodo) {
+    let todo = this.findByKey(key);
+    this.spliceOut(todo);
   }
   
-  getRemainingTodos(): List<TodoModel> {
-    return this.list.filter((todo: TodoModel) => {
+  add(item: Todo) {
+    item.key = this.fbAdapter.pushNewTodo(item.model);
+  }
+  remove(item: Todo) {
+    this.fbAdapter.deleteTodo(item.key);
+  }
+  save(item: Todo) {
+    this.fbAdapter.updateTodo(item.key, item.model);
+  }
+  
+  getRemainingTodos(): List<Todo> {
+    return this.list.filter((todo: Todo) => {
       return !todo.completed;
     });
   }
   
-  spliceOut(item: TodoModel) {
+  spliceOut(item: Todo) {
     let index = this.indexFor(item);
     if (index > -1) {
       return this.list.splice(index, 1)[0];
@@ -70,12 +108,24 @@ export class TodoStore {
     return null;
   }
   
-  indexFor(item: TodoModel): number {
+  indexFor(item: Todo): number {
     return this.list.indexOf(item);
   }
   
+  findByKey(key: string): Todo {
+    for (let todo of this.list) {
+      if (todo.key === key) return todo;
+    }
+  }
+  
   removeBy(filter: any) {
-    this.list = this.list.filter(filter);
+    let listCopy = this.list.slice();
+    
+    for (let todo of listCopy) {
+      if (filter(todo)) {
+        this.remove(todo);
+      }
+    }
   }
   
   forEachTodo(action: any) {

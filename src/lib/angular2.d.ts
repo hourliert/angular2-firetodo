@@ -1,5 +1,12 @@
 interface List<T> extends Array<T> {
 }
+interface DictionnaryNumber<V> {
+  [key: number]: V;
+}
+interface DictionnaryString<V> {
+  [key: string]: V;
+}
+
 interface Type {}
 
 declare module "angular2/angular2" {

@@ -1,17 +1,17 @@
 /// <reference path="../../_all.ts" />
 
-import {TodoModel, TodoFactory, TodoStore} from './TodoStore';
+import {Todo, TodoFactory, TodoStore} from './TodoStore';
 
 describe('Todo Store', () => {
   describe('Todo Model', () => {
-    var model: TodoModel;
+    var model: Todo;
     
     afterEach(() => {
       model = null;
     });
     
     it('should be defined', () => {
-      model = new TodoModel(1, 'Get things done.', false, false);
+      model = new Todo(1, 'Get things done.', false, false);
       model.should.be.ok;
       model.key.should.equal(1);
       model.title.should.equal('Get things done.');
@@ -43,7 +43,7 @@ describe('Todo Store', () => {
     it('should create a todo', () => {
       factory = new TodoFactory();
       factory.uid.should.equal(0);
-      var todo: TodoModel = factory.createTodo('Get things done.', false, false);
+      var todo: Todo = factory.createTodo('Get things done.', false, false);
       todo.should.be.ok;
       todo.key.should.equal(1);
       todo.title.should.equal('Get things done.');
@@ -53,7 +53,7 @@ describe('Todo Store', () => {
   
   describe('Todo Store', () => {
     var store: TodoStore,
-        todo: TodoModel;
+        todo: Todo;
     
     afterEach(() => {
       store = null;
@@ -67,7 +67,7 @@ describe('Todo Store', () => {
     
     it('should add a todo', () => {
       store = new TodoStore();
-      todo = new TodoModel(1, 'Get things done.', false, false);
+      todo = new Todo(1, 'Get things done.', false, false);
       
       store.add(todo);
       store.list.length.should.equal(1);
@@ -76,7 +76,7 @@ describe('Todo Store', () => {
     
     it('should get the index of a todo', () => {
       store = new TodoStore();
-      todo = new TodoModel(1, 'Get things done.', false, false);
+      todo = new Todo(1, 'Get things done.', false, false);
   
       store.add(todo);
       store.indexFor(todo).should.equal(0);
@@ -84,7 +84,7 @@ describe('Todo Store', () => {
     
     it('should splice out a todo', () => {
       store = new TodoStore();
-      todo = new TodoModel(1, 'Get things done.', false, false);
+      todo = new Todo(1, 'Get things done.', false, false);
       
       store.add(todo);
       store.spliceOut(todo).should.equal(todo);   
@@ -94,7 +94,7 @@ describe('Todo Store', () => {
     
     it('should remove a todo', () => {
       store = new TodoStore();
-      todo = new TodoModel(1, 'Get things done.', false, false);
+      todo = new Todo(1, 'Get things done.', false, false);
       
       store.list.length.should.equal(0);
       store.add(todo);
@@ -105,11 +105,11 @@ describe('Todo Store', () => {
     
     it('should get the remaining todos', () => {
       store = new TodoStore();
-      var todo1 = new TodoModel(1, 'Get things done 1.', false, false),
-          todo2 = new TodoModel(1, 'Get things done 2.', true, false),
-          todo3 = new TodoModel(1, 'Get things done 3.', true, false),
-          todo4 = new TodoModel(1, 'Get things done 4.', false, false),
-          todo5 = new TodoModel(1, 'Get things done 5.', false, false);
+      var todo1 = new Todo(1, 'Get things done 1.', false, false),
+          todo2 = new Todo(1, 'Get things done 2.', true, false),
+          todo3 = new Todo(1, 'Get things done 3.', true, false),
+          todo4 = new Todo(1, 'Get things done 4.', false, false),
+          todo5 = new Todo(1, 'Get things done 5.', false, false);
           
       store.list = [todo1, todo2, todo3, todo4, todo5];
       
@@ -125,11 +125,11 @@ describe('Todo Store', () => {
     
     it('should remove using a filter', () => {
       store = new TodoStore();
-      var todo1 = new TodoModel(1, 'Get things done 1.', false, false),
-          todo2 = new TodoModel(1, 'Get things done 2.', true, false),
-          todo3 = new TodoModel(1, 'Get things done 3.', true, false),
-          todo4 = new TodoModel(1, 'Get things done 4.', false, false),
-          todo5 = new TodoModel(1, 'Get things done 5.', false, false);
+      var todo1 = new Todo(1, 'Get things done 1.', false, false),
+          todo2 = new Todo(1, 'Get things done 2.', true, false),
+          todo3 = new Todo(1, 'Get things done 3.', true, false),
+          todo4 = new Todo(1, 'Get things done 4.', false, false),
+          todo5 = new Todo(1, 'Get things done 5.', false, false);
           
       store.list = [todo1, todo2, todo3, todo4, todo5];
       
@@ -145,11 +145,11 @@ describe('Todo Store', () => {
     
     it('should apply a function on each todo', () => {
       store = new TodoStore();
-      var todo1 = new TodoModel(1, 'Get things done 1.', false, false),
-          todo2 = new TodoModel(1, 'Get things done 2.', true, false),
-          todo3 = new TodoModel(1, 'Get things done 3.', true, false),
-          todo4 = new TodoModel(1, 'Get things done 4.', false, false),
-          todo5 = new TodoModel(1, 'Get things done 5.', false, false);
+      var todo1 = new Todo(1, 'Get things done 1.', false, false),
+          todo2 = new Todo(1, 'Get things done 2.', true, false),
+          todo3 = new Todo(1, 'Get things done 3.', true, false),
+          todo4 = new Todo(1, 'Get things done 4.', false, false),
+          todo5 = new Todo(1, 'Get things done 5.', false, false);
           
       store.list = [todo1, todo2, todo3, todo4, todo5];
       

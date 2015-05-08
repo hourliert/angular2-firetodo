@@ -1,7 +1,7 @@
 import {TodoList} from './todo-list';
-import {TodoStore, TodoFactory, TodoModel, TODO_DISPLAY} from '../service/TodoStore';
+import {TodoStore, TodoFactory, Todo, TODO_DISPLAY} from '../service/TodoStore';
 
-class TodoMock extends TodoModel {
+class TodoMock extends Todo {
   constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false, hidden: boolean = false) {
     super(key, title, completed, hidden);
   }
