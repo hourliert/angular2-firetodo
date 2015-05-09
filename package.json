@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "devDependencies": {
     "browser-sync": "^2.6.9",
-    "chai": "^2.3.0",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-bump": "^0.3.0",
@@ -15,7 +14,6 @@
     "gulp-util": "^3.0.4",
     "jspm": "^0.15.5",
     "karma": "^0.12.31",
-    "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.8",
     "karma-cli": "0.0.4",
     "karma-coverage": "^0.3.1",
@@ -23,10 +21,10 @@
     "karma-mocha": "^0.1.10",
     "karma-mocha-reporter": "^1.0.2",
     "karma-phantomjs2-launcher": "^0.1.6",
+    "karma-should": "0.0.1",
     "karma-sinon": "^1.0.4",
     "merge-stream": "^0.1.7",
     "run-sequence": "^1.1.0",
-    "sinon": "^1.14.1",
     "typescript": "^1.5.0-beta"
   },
   "scripts": {
@@ -35,6 +33,10 @@
   "jspm": {
     "directories": {
       "baseURL": "src"
+    },
+    "dependencies": {
+      "es6-promise": "npm:es6-promise@^2.1.1",
+      "firebase": "github:firebase/firebase-bower@^2.2.4"
     },
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.88",

@@ -1,22 +1,18 @@
 /// <reference path="../_all.ts" />
 
-import {Component, bootstrap, View} from "angular2/angular2";
-import {DisplayComponent} from "./display/show-properties";
-import {TodoList} from "./todo-list/todo-list";
+import {bootstrap} from "angular2/angular2";
+//import {Injector} from "angular2/di";
+//import {reflector} from 'angular2/src/reflection/reflection';
+//import {ReflectionCapabilities} from 'angular2/src/reflection/reflection_capabilities';
 
-@Component({
-  selector: 'my-app'
-})
-@View({
-  templateUrl: "app/app.html",
-  directives: [DisplayComponent, TodoList]
-})
-class AppComponent {
-  name: string;
+import {TodoApp} from "./app";
+//import {TodoStore, TodoFactory} from "./service/TodoStore";
 
-  constructor() {
-      this.name = 'Alice';
-  }
-}
+//var injector = Injector.resolveAndCreate([TodoStore, TodoFactory, TodoApp]);
+//
+//var store = injector.get(TodoStore);
+//console.log(store);
 
-bootstrap(AppComponent);
+
+//reflector.reflectionCapabilities = new ReflectionCapabilities();
+bootstrap(TodoApp);

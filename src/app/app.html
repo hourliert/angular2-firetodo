@@ -1,7 +1,26 @@
-<h1>This is Demo use Angular2 and Typescript</h1>
-<p>We will support JSPM as soon as Typescript will.</p>
+<style>@import "base.css";</style>
 
-<p>Just bellow an angular2 directive:</p>
-<display></display>
+<section id="todoapp">
 
-<todo-list></todo-list>
+  <header id="header">
+    <h1>todos</h1>
+    <todo-input (newtodo)="todos.onNewTodo($event)"></todo-input>
+  </header>
+
+  <section id="main">
+    <todo-list #todos></todo-list>
+  </section>
+  
+  <footer id="footer">
+    <todo-count [todos]="store.getRemainingTodos()"></todo-count>
+    
+    <todo-filter (newfilter)="todos.onNewFilter($event)"></todo-filter>
+    
+    <button id="clear-completed" (click)="todos.clearCompleted()">Clear completed</button>
+  </footer>
+</section>
+
+<footer id="info">
+  <p>Double-click to edit a todo</p>
+  <p>Created by <a href="https://gitlab.cnode.fr/Cnode/angular2-seed">Thomas Hourlier</a></p>
+</footer>

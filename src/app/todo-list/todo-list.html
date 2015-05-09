@@ -1,8 +1,33 @@
-<ul>
-  <li *for="#todo of todos">
-    {{ todo }}
+<input id="toggle-all" type="checkbox" (click)="toggleAllTodo($event)">
+<label for="toggle-all">Mark all as complete</label>
+
+<ul id="todo-list">
+  <img src="ressources/images/gears.svg" 
+       alt="loading" 
+       style="margin: auto; width: 100px; display: block; margin-top: 20px;"
+       [class.hidden]="!todoStore.isLoading()"/>
+       
+  <li *for="#todo of todoStore.list"
+      [class.completed]="todo.completed">
+
+    <div class="view"
+        [class.hidden]="todoEdit == todo || todo.hidden">
+        
+        <input class="toggle" type="checkbox"
+                 (click)="toggleCompleteTodo(todo)"
+                 [checked]="todo.completed">
+        
+<!--      <label (dblclick)="editTodo(todo)">{{todo.title}}</label>-->
+      <label>{{todo.title}}</label>
+      <button class="destroy" (click)="deleteTodo(todo)"></button>
+    </div>
+    
+    <div>
+      <input class="edit"
+        [class.visible]="todoEdit == todo"
+        [value]="todo.title"
+        (keyup)="finishEditing($event, todo)>
+    </div>
+ 
   </li>
 </ul>
-
-<input #todotext (keyup)="doneTyping($event)">
-<button (click)="addTodo(todotext.value)">Add Todo</button>
