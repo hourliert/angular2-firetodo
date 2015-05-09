@@ -2,7 +2,11 @@
 <label for="toggle-all">Mark all as complete</label>
 
 <ul id="todo-list">
-
+  <img src="ressources/images/gears.svg" 
+       alt="loading" 
+       style="margin: auto; width: 100px; display: block; margin-top: 20px;"
+       [class.hidden]="!todoStore.isLoading()"/>
+       
   <li *for="#todo of todoStore.list"
       [class.completed]="todo.completed">
 

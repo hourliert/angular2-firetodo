@@ -68,7 +68,6 @@ export class TodoList {
   }
   
   onNewFilter(display: TodoDisplayType) {
-    console.log(display);
     this.todoStore.forEachTodo((todo: Todo) => {
       if (todo.completed) {
         switch (display) {

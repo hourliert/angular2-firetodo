@@ -53,11 +53,13 @@ export class TodoFactory {
 export class TodoStore implements IFirebaseChangeObserver, IFirebaseAddObserver, IFirebaseRemoveObserver {
   list: List<Todo>;
   fbAdapter: FirebaseAdapter;
+  loading: boolean;
 
   constructor(
     @Inject(FirebaseAdapter) fb: FirebaseAdapter
   ) {
     this.list = [];
+    this.loading = true;
     
     this.fbAdapter = fb;
     
@@ -66,7 +68,12 @@ export class TodoStore implements IFirebaseChangeObserver, IFirebaseAddObserver,
     this.fbAdapter.registerForTodoChanging(this);
   }
   
+  isLoading(): boolean {
+    return this.loading;
+  }
+  
   notifyTodoAdded(key: string, value: ITodo) {
+    this.loading = false;
     this.list.push(new Todo(key, value.title, value.completed, value.hidden));
   }
   notifyTodoChanged(key: string, value: ITodo) {
