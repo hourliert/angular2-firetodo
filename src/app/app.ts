@@ -3,8 +3,8 @@
 import {Component, bootstrap, View} from "angular2/angular2";
 import {Inject} from "angular2/di";
 
-import {FirebaseAdapter} from "./service/firebase-adapter";
-import {TodoStore, TodoFactory} from './service/TodoStore';
+import {FirebaseAdapter} from "./services/firebase-adapter";
+import {TodoStore, TodoFactory} from './services/todo-store';
 import {TodoInput} from "./todo-input/todo-input";
 import {TodoList} from "./todo-list/todo-list";
 import {TodoCount} from "./todo-count/todo-count";

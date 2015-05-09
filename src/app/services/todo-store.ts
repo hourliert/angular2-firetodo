@@ -1,17 +1,8 @@
 /// <reference path="../../_all.ts" />
 
 import {Injectable, Inject} from 'angular2/di';
-import {FirebaseAdapter, IFirebaseObserver} from "./firebase-adapter";
-import {ITodo} from "../interfaces/Todo";
-
-export enum TODO_DISPLAY {
-  all, active, completed
-}
-
-export interface ITodoFilter {
-  label: string;
-  type: TODO_DISPLAY;
-}
+import {FirebaseAdapter, IFirebaseAddObserver, IFirebaseRemoveObserver, IFirebaseChangeObserver} from "./firebase-adapter";
+import {ITodo} from "../interfaces/todo";
 
 export class Todo implements ITodo {
   private _key: string;
@@ -31,20 +22,23 @@ export class Todo implements ITodo {
     this.hidden = hidden;
   }
   
+  set key(key: string) {
+    this._key = key;
+  }
   get key() {
     return this._key;
   }
   
+  set model(model: ITodo) {
+    this.title = model.title;
+    this.completed = model.completed;
+    this.hidden = model.hidden;
+  }
   get model(): ITodo {
     let title = this.title,
         completed = this.completed,
         hidden = this.hidden;
     return { title, completed, hidden };
-  }
-  set model(model: ITodo) {
-    this.title = model.title;
-    this.completed = model.completed;
-    this.hidden = model.hidden;
   }
 }
 
@@ -56,7 +50,7 @@ export class TodoFactory {
 }
 
 @Injectable()
-export class TodoStore implements IFirebaseObserver {
+export class TodoStore implements IFirebaseChangeObserver, IFirebaseAddObserver, IFirebaseRemoveObserver {
   list: List<Todo>;
   fbAdapter: FirebaseAdapter;
 
@@ -76,7 +70,7 @@ export class TodoStore implements IFirebaseObserver {
     this.list.push(new Todo(key, value.title, value.completed, value.hidden));
   }
   notifyTodoChanged(key: string, value: ITodo) {
-    let todo = this.findByKey(key);
+    let todo = this.findByKey(key);   
     todo.model = value;
   }
   notifyTodoRemoved(key: string, value: ITodo) {

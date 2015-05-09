@@ -1,5 +1,5 @@
 import {TodoFilter} from "./todo-filter";
-import {TODO_DISPLAY} from "../service/TodoStore";
+import {TodoDisplayType} from "../interfaces/todo-filter";
 
 describe('Todo Filter Component', () => {
   var component: TodoFilter;
@@ -22,13 +22,13 @@ describe('Todo Filter Component', () => {
     
     var spy = sinon.spy(component.newfilter, "next");
     
-    component.selectFilter(TODO_DISPLAY.all);
+    component.selectFilter(TodoDisplayType.all);
     spy.calledOnce.should.be.ok;
     
-    component.selectFilter(TODO_DISPLAY.completed);
+    component.selectFilter(TodoDisplayType.completed);
     spy.calledTwice.should.be.ok;
     
-    component.selectFilter(TODO_DISPLAY.active);
+    component.selectFilter(TodoDisplayType.active);
     spy.calledThrice.should.be.ok;
   });
 });

@@ -1,7 +1,8 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, For} from 'angular2/angular2';
-import {TodoStore, TodoFactory, Todo, TODO_DISPLAY} from '../service/TodoStore';
+import {TodoStore, TodoFactory, Todo} from '../services/todo-store';
+import {TodoDisplayType} from "../interfaces/todo-filter";
 import {Inject} from "angular2/di";
 
 @Component({
@@ -22,12 +23,10 @@ export class TodoList {
   todoStore: TodoStore;
   todoFactory: TodoFactory;
   todoEdit: Todo;
-  toto: string;
   
   constructor(@Inject(TodoStore) store: TodoStore, @Inject(TodoFactory) factory: TodoFactory) {
     this.todoStore = store;
     this.todoFactory = factory;
-    this.toto = 'test';
   }
   
   onNewTodo(todoTitle: string) {
@@ -68,30 +67,30 @@ export class TodoList {
     this.todoStore.removeBy(todo => todo.completed);
   }
   
-  onNewFilter(display: TODO_DISPLAY) {
+  onNewFilter(display: TodoDisplayType) {
     console.log(display);
     this.todoStore.forEachTodo((todo: Todo) => {
       if (todo.completed) {
         switch (display) {
-          case TODO_DISPLAY.all:
+          case TodoDisplayType.all:
             todo.hidden = false;
             break;
-          case TODO_DISPLAY.active:
+          case TodoDisplayType.active:
             todo.hidden = true;
             break;
-          case TODO_DISPLAY.completed:
+          case TodoDisplayType.completed:
             todo.hidden = false;
             break;
         }
       } else {
         switch (display) {
-          case TODO_DISPLAY.all:
+          case TodoDisplayType.all:
             todo.hidden = false;
             break;
-          case TODO_DISPLAY.active:
+          case TodoDisplayType.active:
             todo.hidden = false;
             break;
-          case TODO_DISPLAY.completed:
+          case TodoDisplayType.completed:
             todo.hidden = true;
             break;
         }

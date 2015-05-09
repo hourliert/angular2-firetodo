@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, EventEmitter, For} from 'angular2/angular2';
-import {TODO_DISPLAY, ITodoFilter} from "../service/TodoStore";
+import {TodoDisplayType, ITodoFilter} from "../interfaces/todo-filter";
 
 @Component({
   selector: 'todo-filter',
@@ -20,20 +20,20 @@ export class TodoFilter {
     this.filters = [
       {
         label: 'All',
-        type: TODO_DISPLAY.all
+        type: TodoDisplayType.all
       },
       {
         label: 'Active',
-        type: TODO_DISPLAY.active
+        type: TodoDisplayType.active
       },
       {
         label: 'Completed',
-        type: TODO_DISPLAY.completed
+        type: TodoDisplayType.completed
       }
     ];
   }
   
-  selectFilter(type: TODO_DISPLAY) {
+  selectFilter(type: TodoDisplayType) {
     this.newfilter.next(type);
   }
 }

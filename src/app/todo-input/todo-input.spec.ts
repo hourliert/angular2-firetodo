@@ -1,41 +1,16 @@
 import {TodoInput} from './todo-input';
-import {TodoStore, TodoFactory, Todo} from '../service/TodoStore';
-
-class TodoMock extends Todo {
-  constructor(key: number = 1, title: string = 'Get things done.', completed: boolean = false, hidden: boolean = false) {
-    super(key, title, completed, hidden);
-  }
-}
-class TodoStoreMock extends TodoStore{
-  constructor() {
-    super();
-  }
-  add(todo: TodoMock) { 
-  }
-  remote(todo: TodoMock){
-  }
-}
-
-class TodoFactoryMock extends TodoFactory {
-  constructor() {
-    super();
-  }
-  createTodo(title: string = 'Get things done.', completed: boolean = false): TodoMock {
-    return new TodoMock(1, title, completed);
-  }
-}
+import {TodoStore, TodoFactory, Todo} from '../services/todo-store';
 
 describe('Todo Input Component', () => {
   var component: TodoInput;
 
-  afterEach(() => {
-    component = null;
-  });
-  
-  it('should be defined', () => {
+  beforeEach(() => {
     component = new TodoInput();
     component.should.be.ok;
     component.newtodo.should.be.ok;
+  });
+  afterEach(() => {
+    component = null;
   });
   
   it('should handle a user input', () => {

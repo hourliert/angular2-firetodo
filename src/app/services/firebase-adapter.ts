@@ -2,24 +2,27 @@
 
 import {Injectable} from 'angular2/di';
 
-import {ITodo} from "../interfaces/Todo";
+import {ITodo} from "../interfaces/todo";
 
 import "firebase";
-//import "es6-promise";
 
 
-export interface IFirebaseObserver {
+export interface IFirebaseAddObserver {
   notifyTodoAdded(key: string, value: ITodo): void;
-  notifyTodoChanged(key: string, value: ITodo): void;
+}
+export interface IFirebaseRemoveObserver {
   notifyTodoRemoved(key: string, value: ITodo): void;
+}
+export interface IFirebaseChangeObserver {
+  notifyTodoChanged(key: string, value: ITodo): void;
 }
 
 @Injectable()
 export class FirebaseAdapter {
   todosRef: Firebase;
-  changeObservers: IFirebaseObserver[];
-  removeObservers: IFirebaseObserver[];
-  addObservers: IFirebaseObserver[];
+  changeObservers: IFirebaseChangeObserver[];
+  removeObservers: IFirebaseRemoveObserver[];
+  addObservers: IFirebaseAddObserver[];
   
   constructor() {
     this.todosRef = new Firebase('https://angular2-todo.firebaseio.com/todos');
@@ -44,14 +47,14 @@ export class FirebaseAdapter {
     });
   }
   
-  registerForTodoAdding(observer: IFirebaseObserver) {
-    this.changeObservers.push(observer);
+  registerForTodoAdding(observer: IFirebaseAddObserver) {
+    this.addObservers.push(observer);
   }
-  registerForTodoRemoving(observer: IFirebaseObserver) {
+  registerForTodoRemoving(observer: IFirebaseRemoveObserver) {
     this.removeObservers.push(observer);
   }
-  registerForTodoChanging(observer: IFirebaseObserver) {
-    this.addObservers.push(observer);
+  registerForTodoChanging(observer: IFirebaseChangeObserver) {
+    this.changeObservers.push(observer);
   }
   
   todoAdded(key: string, value: ITodo) {

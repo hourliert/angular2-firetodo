@@ -1,7 +1,7 @@
 /// <reference path="../../_all.ts" />
 
 import {Component, View, EventEmitter} from 'angular2/angular2';
-import {Todo} from '../service/TodoStore';
+import {Todo} from '../services/todo-store';
 
 @Component({
   selector: 'todo-input',
